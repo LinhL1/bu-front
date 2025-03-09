@@ -204,11 +204,39 @@ document.getElementById("save-btn").addEventListener("click", () => {
     const email = document.getElementById("modal-email").value.trim();
     const role = document.getElementById("modal-role").value.trim();
     const favourites = document.getElementById("modal-favourites").value.trim();
+    
+    const invalidEmail = document.getElementById("invalidEmail");
+    const userInput = document.getElementById("userInput");
+    const nameInput = document.getElementById("nameInput");
+    const emailInput = document.getElementById("emailInput");
 
-    if (!username || !name || !email) {
-        alert("Username, Name, and Email are required!");
-        return;
+    // if (!username || !name || !email) {
+    //     reqInput.style.display = "block";
+    //     console.log("missing");
+    //     //return;
+    // }
+    
+    ((!username) ? userInput.style.display = "block" :  userInput.style.display = "none");
+    ((!name) ? nameInput.style.display = "block" :  nameInput.style.display = "none");
+    ((!email) ? emailInput.style.display = "block" :  emailInput.style.display = "none");
+
+    function valid(email){
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return pattern.test(email);
     }
+
+    if(email){
+      if (!valid(email)) {
+        invalidEmail.style.display = "block"; 
+      } else {
+        invalidEmail.style.display = "none"; 
+      }
+    }
+
+    if (!valid(email)) {
+      return; 
+    }
+
 
     const newUser = {
         username,

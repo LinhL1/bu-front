@@ -103,3 +103,8 @@ td {
   padding: 5px;
   width: 80%;
 }
+.error{
+  font-size: 10px;
+  color: red;
+  display: none;
+}
