@@ -36,6 +36,7 @@ function displayUsers(users) {
                 <button class="edit-btn" onclick="openModal('edit', ${index})">Edit</button>
                 <button class="delete-btn" onclick="openDeleteModal(${index})">🗑️</button>
             </td>
+            <td><input type="checkbox" class="select-row" data-index="${index}"></td>
         `;
         userTable.appendChild(row);
     });
@@ -336,3 +337,37 @@ function pagination(){
 }
 pagination();
 
+//filter by role
+function roleFilter(){
+  const selectRole = document.getElementById("selectRole");
+
+  selectRole.addEventListener('change', function() {
+    let selectedRole = selectRole.value; 
+    console.log(selectedRole);
+
+    let filteredUsers;
+
+    if (selectedRole) {
+      filteredUsers = usersData.filter(user => user.role === selectedRole);
+  } else {
+      filteredUsers = usersData;
+  }
+
+  displayUsers(filteredUsers); 
+});
+}
+roleFilter();
+
+// delete in bulk
+document.getElementById("bulkDelete").addEventListener("click", bulkDelete);
+
+function bulkDelete(){
+  const selectedCheckboxes = document.querySelectorAll(".select-row:checked");
+  console.log("clicked");
+
+  const indexesToDelete = Array.from(selectedCheckboxes).map(checkbox => parseInt(checkbox.dataset.index));
+
+  usersData = usersData.filter((_, index) => !indexesToDelete.includes(index));
+
+  displayUsers(usersData);
+}

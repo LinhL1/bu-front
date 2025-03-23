@@ -67,7 +67,7 @@
             <label><input type="checkbox" class="filter">Favorites</label>
             <label><input type="checkbox" class="filter">Last Login</label>
             <label><input type="checkbox" class="filter">Created At</label><br>
-        </div>
+        </div><br>
 
         <label>Rows per page:</label>
         <select id="pagination">
@@ -77,7 +77,17 @@
             <option value="100">100</option>
             <option value="150">150</option>
         </select><br>
+
+        <label>FIlter by role:</label>
+        <select id="selectRole">
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+            <option value="admin">Admin</option>
+        </select>
+
         <input type="text" id="search" placeholder="Search by username">
+        <button id="bulkDelete">Delete All Selected</button>
+
     </div>
     <div id="user-table">
         <button id="add-user-btn">Add New User</button>
@@ -111,7 +121,12 @@
         <input type="email" id="modal-email" placeholder="Email">
         <span id="invalidEmail" class="error">Email is invalid!</span>
         <span id="emailInput" class="error">Email required</span>
-        <input type="text" id="modal-role" placeholder="Role">
+        <select id="modal-role">
+            <option value="" disabled selected hidden>Role</option> 
+            <option>Student</option>
+            <option>Teacher</option>
+            <option>Admin</option>
+        </select>
         <input type="text" id="modal-favourites" placeholder="Favorites">
 
         <button id="save-btn">Save</button>
