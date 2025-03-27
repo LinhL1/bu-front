@@ -22,6 +22,26 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             z-index: 1000;
+
+            pointer-events: none;
+            transition: all 1.5s;
+
+            &:target {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+            & > div {
+                width: 400px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+            }
+
+            animation-name: fadein;
+            animation-duration: 1.5s;
         }
 
         .modal-overlay {
@@ -34,6 +54,23 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
+
+            &:target {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+            & > div {
+                width: 400px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+            }
+
+            animation-name: fadeout;
+            animation-duration: 1.5s;
         }
 
         .modal input {
@@ -67,7 +104,7 @@
             <label><input type="checkbox" class="filter">Favorites</label>
             <label><input type="checkbox" class="filter">Last Login</label>
             <label><input type="checkbox" class="filter">Created At</label><br>
-        </div><br>
+        </div>
 
         <label>Rows per page:</label>
         <select id="pagination">
@@ -77,17 +114,7 @@
             <option value="100">100</option>
             <option value="150">150</option>
         </select><br>
-
-        <label>FIlter by role:</label>
-        <select id="selectRole">
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-            <option value="admin">Admin</option>
-        </select>
-
         <input type="text" id="search" placeholder="Search by username">
-        <button id="bulkDelete">Delete All Selected</button>
-
     </div>
     <div id="user-table">
         <button id="add-user-btn">Add New User</button>
@@ -111,24 +138,14 @@
     <!-- Modal Overlay -->
     <div class="modal-overlay" id="modal-overlay"></div>
 
-     <!-- Edit/Add Modal -->
-     <div class="modal" id="modal">
+    <!-- Edit/Add Modal -->
+    <div class="modal" id="modal">
         <h3 id="modal-title">Add User</h3>
         <input type="text" id="modal-username" placeholder="Username">
-        <span id="userInput" class="error">Username required</span>
         <input type="text" id="modal-name" placeholder="Name">
-        <span id="nameInput" class="error">Name required</span>
         <input type="email" id="modal-email" placeholder="Email">
-        <span id="invalidEmail" class="error">Email is invalid!</span>
-        <span id="emailInput" class="error">Email required</span>
-        <select id="modal-role">
-            <option value="" disabled selected hidden>Role</option> 
-            <option>Student</option>
-            <option>Teacher</option>
-            <option>Admin</option>
-        </select>
+        <input type="text" id="modal-role" placeholder="Role">
         <input type="text" id="modal-favourites" placeholder="Favorites">
-
         <button id="save-btn">Save</button>
         <button id="cancel-btn">Cancel</button>
     </div>
