@@ -140,3 +140,13 @@ td {
 #modal-role{
   padding: 5px;
 }
+
+@keyframes fadein {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1} 
+}
+
+@keyframes fadeout {
+  from {bottom: 0; opacity: 1}
+  to {bottom: -300px; opacity: 0} 
+}
