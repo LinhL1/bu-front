@@ -85,6 +85,7 @@ td {
 #add-user-btn{
   font-size: 16px;
   border: 2px solid black;
+  border-radius: 12px;
   color: var(--c-para-w);
   background-color: var(--orange);
   margin: 0 auto;
@@ -103,9 +104,37 @@ td {
   padding: 5px;
   width: 80%;
 }
+#bulkDelete{
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  border-radius: 12px;
+  padding: 8px;
+}
+#bulkDelete:hover{
+  background-color: #008dd2;
+  color:#f5f5f5;
+  transition: 0.5s;
+}
+#modal-role{
+  padding: 5px;
+}
+
+@keyframes fadein {
+  from {bottom: -300px; opacity: 0}
+  to {bottom: 0; opacity: 1} 
+}
+
+@keyframes fadeout {
+  from {bottom: 0; opacity: 1}
+  to {bottom: -300px; opacity: 0} 
+}
 .error{
+  display: none;
   font-size: 10px;
   color: red;
+}
+#maxName, #maxUsername {
   display: none;
 }
 #modal-role{

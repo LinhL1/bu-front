@@ -35,8 +35,8 @@ function displayUsers(users) {
             <td>
                 <button class="edit-btn" onclick="openModal('edit', ${index})">Edit</button>
                 <button class="delete-btn" onclick="openDeleteModal(${index})">🗑️</button>
+                <input type="checkbox" class="select-row" data-index="${index}">
             </td>
-            <td><input type="checkbox" class="select-row" data-index="${index}"></td>
         `;
         userTable.appendChild(row);
     });
@@ -46,36 +46,6 @@ function formatDate(isoString) {
   const options = { year: "numeric", month: "short", day: "numeric" };
   return new Date(isoString).toLocaleDateString(undefined, options);
 }
-
-// // Delete user
-// function deleteUser(index) {
-//   if (confirm("Are you sure you want to delete this user?")) {
-//     usersData.splice(index, 1); // Remove the user from the array
-//     displayUsers(usersData); // Re-render the table
-//   }
-// }
-
-// // Edit user
-// function editUser(index) {
-//   const user = usersData[index];
-
-//   const updatedUser = {
-//     username: prompt("Edit Username:", user.username),
-//     name: prompt("Edit Name:", user.name),
-//     email: prompt("Edit Email:", user.email),
-//     role: prompt("Edit Role:", user.role),
-//     favourites: prompt("Edit Favourites:", user.favourites),
-//     last_login: user.last_login,
-//     created_at: user.created_at,
-//   };
-
-//   if (updatedUser.username && updatedUser.name && updatedUser.email) {
-//     usersData[index] = updatedUser; // Update user in the array
-//     displayUsers(usersData); // Re-render the table
-//   } else {
-//     alert("All fields are required to edit the user!");
-//   }
-// }
 
 /// Sort-Select ///
 let columnHeaders = document.querySelectorAll("th")
@@ -144,10 +114,15 @@ function sortColumn(column, order){
 } 
 }
 
+const modal = document.getElementById('modal');
+const overlay = document.getElementById('modal-overlay');
+const saveBtn = document.getElementById('save-btn');
+const cancelBtn = document.getElementById('cancel-btn');
+
 // Open the modal (Add/Edit User)
 function openModal(mode, index = null) {
-    const modal = document.getElementById("modal");
-    const overlay = document.getElementById("modal-overlay");
+
+ clearModalForm();
 
     const title = document.getElementById("modal-title");
     const username = document.getElementById("modal-username");
@@ -176,8 +151,34 @@ function openModal(mode, index = null) {
         favourites.value = "";
     }
 
+    modal.style.animation = '';
+    overlay.style.animation = '';
+
     modal.style.display = "block";
     overlay.style.display = "block";
+    
+}
+
+// Close Modal
+function closeModal(){
+  modal.style.animation =  'fadeout 1s forwards';
+  overlay.style.animation = 'fadeout 1s forwards';
+
+  function OverlayEnd() {
+    overlay.style.display = 'none';
+    overlay.style.animation = '';
+    overlay.removeEventListener('animationend', OverlayEnd);
+  }
+
+  function ModalEnd() {
+    modal.style.display = 'none';
+    modal.style.animation = '';
+    modal.removeEventListener('animationend', ModalEnd);
+  }
+
+  overlay.addEventListener('animationend', OverlayEnd);
+  modal.addEventListener('animationend', ModalEnd);
+
 }
 
 // Open Delete Confirmation Modal
@@ -190,8 +191,8 @@ function openDeleteModal(index) {
     overlay.style.display = "block";
 }
 
-// Close any modal
-function closeModal() {
+// Close (single) delete modal
+function closeDeleteModal() {
     document.querySelectorAll(".modal").forEach((modal) => {
         modal.style.display = "none";
     });
@@ -199,7 +200,9 @@ function closeModal() {
 }
 
 // Save user (Add/Edit)
-document.getElementById("save-btn").addEventListener("click", () => {
+document.getElementById("save-btn").addEventListener("click", () => {  
+  clearModalForm();
+
     const username = document.getElementById("modal-username").value.trim();
     const name = document.getElementById("modal-name").value.trim();
     const email = document.getElementById("modal-email").value.trim();
@@ -210,16 +213,31 @@ document.getElementById("save-btn").addEventListener("click", () => {
     const userInput = document.getElementById("userInput");
     const nameInput = document.getElementById("nameInput");
     const emailInput = document.getElementById("emailInput");
-
-    // if (!username || !name || !email) {
-    //     reqInput.style.display = "block";
-    //     console.log("missing");
-    //     //return;
-    // }
+    const maxName = document.getElementById("maxName");
+    const maxUsername = document.getElementById("maxUsername");
     
-    ((!username) ? userInput.style.display = "block" :  userInput.style.display = "none");
-    ((!name) ? nameInput.style.display = "block" :  nameInput.style.display = "none");
-    ((!email) ? emailInput.style.display = "block" :  emailInput.style.display = "none");
+let isValid = true;
+
+    if(!name){
+      nameInput.style.display = "block";
+      isValid = false;
+    }else{
+      nameInput.style.display = "none";
+    }
+
+    if(!username){
+      userInput.style.display = "block";
+      isValid = false;
+    }else{
+      userInput.style.display = "none";
+    }
+
+    if(!email){
+      emailInput.style.display = "block";
+      isValid = false;
+    }else{
+      emailInput.style.display = "none";
+    }
 
     function valid(email){
       const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -229,15 +247,30 @@ document.getElementById("save-btn").addEventListener("click", () => {
     if(email){
       if (!valid(email)) {
         invalidEmail.style.display = "block"; 
+        isValid = false;
       } else {
         invalidEmail.style.display = "none"; 
       }
+    }    
+    
+    if(name.length >= 20){
+      maxName.style.display = "block";
+      isValid = false;
+      
+    } else {
+      maxName.style.display = "none"; 
     }
 
-    if (!valid(email)) {
-      return; 
+    if(username.length >= 20){
+      maxUsername.style.display = "block";
+      isValid = false;
+    } else {
+      maxUsername.style.display = "none"; 
     }
 
+    if(!isValid){
+      return;
+    }
 
     const newUser = {
         username,
@@ -265,11 +298,11 @@ document.getElementById("confirm-delete-btn").addEventListener("click", () => {
         usersData.splice(deleteIndex, 1);
         displayUsers(usersData);
     }
-    closeModal();
+    closeDeleteModal();
 });
 
 // Cancel Delete User
-document.getElementById("cancel-delete-btn").addEventListener("click", closeModal);
+//document.getElementById("cancel-delete-btn").addEventListener("click", closeDeleteModal);
 
 // Search functionality
 document.getElementById("search").addEventListener("input", () => {
@@ -363,11 +396,20 @@ document.getElementById("bulkDelete").addEventListener("click", bulkDelete);
 
 function bulkDelete(){
   const selectedCheckboxes = document.querySelectorAll(".select-row:checked");
-  console.log("clicked");
 
-  const indexesToDelete = Array.from(selectedCheckboxes).map(checkbox => parseInt(checkbox.dataset.index));
+  const indexToDelete = Array.from(selectedCheckboxes).map(checkbox => parseInt(checkbox.dataset.index));
 
-  usersData = usersData.filter((_, index) => !indexesToDelete.includes(index));
+  usersData = usersData.filter((_, index) => !indexToDelete.includes(index));
 
   displayUsers(usersData);
+}
+
+// remove all validation error messages from modal
+function clearModalForm(){
+  maxName.style.display = "none";
+  maxUsername.style.display = "none";
+  invalidEmail.style.display = "none";
+  nameInput.style.display = "none";
+  userInput.style.display = "none";
+  emailInput.style.display = "none";
 }

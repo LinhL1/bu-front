@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="./css/users.css">
     <title>User Admin Panel</title>
     <style>
-        /* Modal styles */
-        .modal {
+         /* Modal styles */
+         .modal {
             display: none;
             position: fixed;
             top: 50%;
@@ -22,6 +22,26 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             z-index: 1000;
+
+            pointer-events: auto;
+            transition: all 1s;
+
+            &:target {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+            & > div {
+                width: 400px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+            }
+
+            animation-name: fadein;
+            animation-duration: 1s;
         }
 
         .modal-overlay {
@@ -55,6 +75,7 @@
             margin-bottom: 20px;
         }
     </style>
+
 </head>
 <body>
     <div id="table-options">
@@ -116,8 +137,10 @@
         <h3 id="modal-title">Add User</h3>
         <input type="text" id="modal-username" placeholder="Username">
         <span id="userInput" class="error">Username required</span>
+        <span id="maxUsername" class="error">Max 20 characters</span>
         <input type="text" id="modal-name" placeholder="Name">
         <span id="nameInput" class="error">Name required</span>
+        <span id="maxName" class="error">Max 20 characters</span>
         <input type="email" id="modal-email" placeholder="Email">
         <span id="invalidEmail" class="error">Email is invalid!</span>
         <span id="emailInput" class="error">Email required</span>
