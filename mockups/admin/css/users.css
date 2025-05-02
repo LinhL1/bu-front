@@ -50,7 +50,7 @@ table{
   margin: 20px auto; 
   margin-top: 10px;
   padding: 5px; 
-  width: 95%;
+  width: 100%;
   
   background-color: var(--c-heading-w);
   border: 2px solid black;
@@ -149,4 +149,44 @@ td {
 @keyframes fadeout {
   from {bottom: 0; opacity: 1}
   to {bottom: -300px; opacity: 0} 
+}
+
+/* responsive design */
+@media (max-width: 600px){
+
+  th {
+    display: none;
+  }
+  td {
+    padding: 15px; 
+    border-bottom: none;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    white-space: nowrap;
+  }
+
+  td::before {
+    content: attr(data-column) ":\00a0\00a0";
+    font-weight: 700;
+    color:#242424;
+  }
+    table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  tr:nth-of-type(2n) {
+    background: hsl(0 0% 0% / 0.1);
+  }
+
+  td.no-label::before {
+    content: "";
+  }
+
+  td:first-child {
+    padding-top: 30px;
+  }
+  td:last-child {
+    padding-bottom: 30px;
+  }
 }

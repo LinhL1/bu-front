@@ -25,14 +25,14 @@ function displayUsers(users) {
     users.forEach((user, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${user.username}</td>
-            <td>${user.name}</td>
-            <td>${user.email}</td>
-            <td>${user.role}</td>
-            <td>${user.favourites}</td>
-            <td>${formatDate(user.last_login)}</td>
-            <td>${formatDate(user.created_at)}</td>
-            <td>
+            <td data-column="Username">${user.username}</td>
+            <td data-column="Name">${user.name}</td>
+            <td data-column="Email">${user.email}</td>
+            <td data-column="Role">${user.role}</td>
+            <td data-column="Favorites">${user.favourites}</td>
+            <td data-column="last Login">${formatDate(user.last_login)}</td>
+            <td data-column="Created">${formatDate(user.created_at)}</td>
+            <td class="no-label">
                 <button class="edit-btn" onclick="openModal('edit', ${index})">Edit</button>
                 <button class="delete-btn" onclick="openDeleteModal(${index})">🗑️</button>
                 <input type="checkbox" class="select-row" data-index="${index}">
